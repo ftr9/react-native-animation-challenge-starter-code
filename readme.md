@@ -5,6 +5,7 @@ necessary dependencies installed to get you started quickly.
 
 ### What's installed ?
 
+- Typescript
 - react-native-reanimated
 - @expo-vector/icons
 - react-native-gesture-handler
