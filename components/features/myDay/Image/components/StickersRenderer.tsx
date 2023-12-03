@@ -56,7 +56,7 @@ const StickersRenderer = () => {
         borderTopRightRadius: 10,
         borderTopLeftRadius: 10,
         bottom: 0,
-        backgroundColor: 'black',
+        backgroundColor: 'white',
         paddingVertical: 20,
         paddingHorizontal: 10,
       }}
@@ -66,6 +66,7 @@ const StickersRenderer = () => {
           flex: 1,
         }}
         numColumns={3}
+        showsVerticalScrollIndicator={false}
         data={stickers}
         keyExtractor={(_, index) => `${index}`}
         renderItem={({ item }) => {

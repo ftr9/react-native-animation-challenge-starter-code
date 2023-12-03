@@ -1,6 +1,6 @@
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
-import { Canvas, Group, Path } from '@shopify/react-native-skia';
+import { Canvas, Group, Path, size } from '@shopify/react-native-skia';
 import { runOnJS } from 'react-native-reanimated';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
@@ -12,6 +12,7 @@ import SizeSlider from './SizeSlider';
 interface IPath {
   segments: string[];
   color: string;
+  strokeWidth: number;
 }
 
 enum DRAWINGMODE {
@@ -24,6 +25,8 @@ const DrawingBoard = ({ isEnabled }: { isEnabled: boolean }) => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [drawingMode, setDrawingMode] = useState(DRAWINGMODE.PENCIL);
   const [activeColor, setActiveColor] = useState('#f8f9fa');
+  const [pencilStrokeWidth, setPencilStrokeWidth] = useState(5);
+  const [sizeSliderPos, setSizeSliderPos] = useState(0);
 
   //BOOELAN
   const isInDrawingMode = drawingMode === DRAWINGMODE.PENCIL;
@@ -38,6 +41,7 @@ const DrawingBoard = ({ isEnabled }: { isEnabled: boolean }) => {
     newPath.unshift({
       segments: [`M ${xCoord} ${yCoord}`],
       color: activeColor,
+      strokeWidth: pencilStrokeWidth,
     });
     setPaths(newPath);
     setIsDrawing(true);
@@ -110,7 +114,7 @@ const DrawingBoard = ({ isEnabled }: { isEnabled: boolean }) => {
                     blendMode={'overlay'}
                     key={idx}
                     path={loc.segments.join(' ')}
-                    strokeWidth={5}
+                    strokeWidth={loc.strokeWidth}
                     style={'stroke'}
                     color={loc.color}
                   />
@@ -126,7 +130,13 @@ const DrawingBoard = ({ isEnabled }: { isEnabled: boolean }) => {
           setActiveColor={setActiveColor}
         />
       )}
-      {isEnabled && !isDrawing && <SizeSlider />}
+      {isEnabled && !isDrawing && (
+        <SizeSlider
+          sizeSliderPos={sizeSliderPos}
+          setSizeSliderPos={setSizeSliderPos}
+          setPencilStrokeWidth={setPencilStrokeWidth}
+        />
+      )}
       {isEnabled && !isDrawing && (
         <View
           style={{
